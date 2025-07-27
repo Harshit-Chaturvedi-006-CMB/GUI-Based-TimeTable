@@ -11,7 +11,7 @@
             text-align: center;
         }
 
-        table{
+        table {
             margin: auto;
             font-size: 15px;
         }
@@ -21,31 +21,30 @@
             color: rgb(255, 255, 255);
             padding: 10px;
             margin: 0px;
-        }   
+        }
 
 
-        table > thead > tr > th{
+        table>thead>tr>th {
             padding: 20px;
             border: 2px solid red;
             /* width:90%; */
-            
-            
+
+
         }
 
-        td{
+        td {
             border: 2px solid blue;
-            padding:10px;
+            padding: 10px;
         }
-        select{
+
+        select {
             font-size: 20px;
             margin: 20px;
         }
 
-        #add{
+        #add {
             font-size: 20px;
         }
-
-        
     </style>
 </head>
 
@@ -65,9 +64,9 @@
         <select name="" id="INS">
 
         </select>
-        <button id ="add" onclick="addRow()">ADD</button>
+        <button id="add" onclick="addRow()">ADD</button>
 
-        
+
     </div>
     <div class="Container">
         <table>
@@ -80,8 +79,11 @@
 
             </tbody>
         </table>
+        <button class="reset" onclick="reset()" >RESET</button>
     </div>
     <script>
+        let day = new Date();
+        // console.log(day.getDay());
         let Box = document.querySelector('#ContentArea');
         let header = document.querySelector('tr');
         let Days = ["MONDAY", "TUESDAY", "WEDENESDAY", "THURSADAY", "FRIDAY"]
@@ -130,7 +132,7 @@
             }
 
         }
-        
+
 
 
 
@@ -142,7 +144,7 @@
             })
 
             Lectures.forEach(i => {
-                PER.innerHTML += `<option value="${i}">${i}(${timeSlots[i-1]})</option>`
+                PER.innerHTML += `<option value="${i}">${i}(${timeSlots[i - 1]})</option>`
             })
 
             instructor.forEach((i, j) => {
@@ -152,10 +154,17 @@
             Days.forEach((i, j) => {
                 DAY.innerHTML += `<option value="${j}">${i}</option>`
                 Box.innerHTML += `<tr class="${i}" ><td>${Days[j]}</td></tr>`
+                if (j === (day.getDay() - 1)) {
+                    document.querySelector(`.${i}`).style.backgroundColor = " rgba(131, 253, 0, 0.7)";
+                };
+
+                if (j === (day.getDay())) {
+                    document.querySelector(`.${i}`).style.backgroundColor = " yellow";
+                }
             })
 
-            
-        DAY.addEventListener('click',()=>{PER.value = 1})
+
+            DAY.addEventListener('click', () => { PER.value = 1 })
 
 
         }
@@ -167,33 +176,41 @@
                 DATA[CurDay] = new Array(Lectures.length)
             }
             DATA[CurDay][PER.value - 1] = (new LECDATA(subjects[SUB.value], Lectures[PER.value - 1], instructor[INS.value]));
-        //    let tr = document.querySelector(`.${Days[DAY.value]}`)
-        //    console.log(tr);
-           
-        //     tr.innerHTML += `
-        //         <td>${DATA[(PER.value -1)].Sub}  ${DATA[(PER.value -1)].ins}</td>
-        //         `
-                let perNum = Number(PER.value);
-                if (!isNaN(perNum) && perNum < 10) {
-                    PER.value = String(perNum + 1);
-                }
-        localStorage.setItem('LECTURE',JSON.stringify(DATA));
-        
+            //    let tr = document.querySelector(`.${Days[DAY.value]}`)
+            //    console.log(tr);
+
+            //     tr.innerHTML += `
+            //         <td>${DATA[(PER.value -1)].Sub}  ${DATA[(PER.value -1)].ins}</td>
+            //         `
+            let perNum = Number(PER.value);
+            if (!isNaN(perNum) && perNum < 10) {
+                PER.value = String(perNum + 1);
+            }
+            localStorage.setItem('LECTURE', JSON.stringify(DATA));
+            
+
+        }
+        let reset = () => {
+            Days.forEach((i, j) => {
+                DATA[i] = new Array(Lectures.length); // Initialize array for each day
+                Lectures.forEach((u, k) => {
+                    DATA[i][k] = new LECDATA("NA", k, "NA")
+
+                })
+            }
+
+            )
+            localStorage.setItem('LECTURE', JSON.stringify(DATA));
+            location.reload()
+
         }
 
         let render = () => {
-            if(localStorage.getItem('LECTURE')){
+            if (localStorage.getItem('LECTURE')) {
                 DATA = JSON.parse(localStorage.getItem('LECTURE'))
-            }else{
-                Days.forEach((i,j) => {
-                    DATA[i] = new Array(Lectures.length); // Initialize array for each day
-                    Lectures.forEach((u,k)=>{
-                        DATA[i][k] = new LECDATA("NA",k,"NA")
+            } else {
 
-                    })
-                })
-               
-          
+                reset()
 
             }
 
@@ -204,7 +221,7 @@
 
 
 
-            
+
 
             Days.forEach(i => {
                 if (DATA[i]) {
@@ -214,16 +231,16 @@
                             tr.innerHTML += `<td>${j.Sub}<hr>${j.ins}</td>`
                         }
                     })
-                }else{
+                } else {
                     console.error("value not found")
                 }
             })
-            
+
         }
         render();
 
 
-        
+
 
 
     </script>
