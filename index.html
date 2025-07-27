@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time-Table</title>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        .nav {
+            background-color: black;
+            color: rgb(255, 255, 255);
+            padding: 10px;
+            margin: 0px;
+        }   
+
+
+        table > thead > tr > th{
+            padding: 20px;
+            border: 2px solid red;
+            /* width:90%; */
+            
+            
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <div class="nav">Timetable</div>
+    <div class="add">
+        <select name="" id="DAY">
+
+        </select>
+        <select name="" id="SUB">
+
+
+        </select>
+        <select name="" id="PER">
+
+        </select>
+        <select name="" id="INS">
+
+        </select>
+        <button onclick="addRow()">ADD</button>
+
+        
+    </div>
+    <div class="Container">
+        <table>
+            <thead>
+                <tr>
+                    <th>PERIOD</th>
+                </tr>
+            </thead>
+            <tbody id="ContentArea">
+
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let Box = document.querySelector('#ContentArea');
+        let header = document.querySelector('tr');
+        let Days = ["MONDAY", "TUESDAY", "WEDENESDAY", "THURSADAY", "FRIDAY"]
+        let Lectures = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        let subjects = ["Electronic Devices", "Digital Electronics", "Signals & Systems", "Data Structures & Algorithms", "* IoT Design ", "Electrical Circuit & Analysis", "Cyber Law & Ethics", "Design Thinking and Innovation-I", "QAPD-I", "Summer Internship-I", "Constitution of India", "BREAK", "    "];
+        let instructor = [
+            "Dr. Vimlesh Singh",                // Electronic Devices
+            "Dr. Pratima",                      // Digital Electronics
+            "Dr. Manish Mishra",                // Signals & Systems
+            "Ms. Vibha ,Ms. Snigdha",       // QAPD-I
+            "Dr. Vandana, CSE(Spe.)",           // Data Structures & Algorithms and Cyber Law & Ethics
+            "Dr. Ashu Gautam",                  // Design Thinking and Innovation-I
+            "Dr. Amana Yadav",                  // Summer Internship-I
+            "Dr. Umesh Dutta",                  // IoT Design
+            "NF",                               // Constitution of India
+            "Dr. Leena G."                      // Electrical Circuit & Analysis
+        ];
+
+        const timeSlots = [
+            "8:10 – 9:00",
+            "9:00–9:50",
+            "9:50–10:40",
+            "10:40–11:30",
+            "11:30–12:20",
+            "12:20–1:10",
+            "1:10–2:00",
+            "2:00–2:50",
+            "2:50–3:40",
+            "3:40–4:30"
+        ];
+
+
+
+        let SUB = document.querySelector("#SUB");
+        let PER = document.querySelector("#PER");
+        let DATA = new Array(10)
+        let INS = document.querySelector("#INS");
+        let DAY = document.querySelector('#DAY');
+
+        class LECDATA {
+            constructor(s, n, ins) {
+                this.Sub = s;
+                this.Period = n;
+                this.ins = ins
+
+            }
+
+        }
+        
+
+
+
+
+        let populate = () => {
+            subjects.forEach((i, j) => {
+                SUB.innerHTML += `<option value="${j}">${i}</option>`
+
+            })
+
+            Lectures.forEach(i => {
+                PER.innerHTML += `<option value="${i}">${i}(${timeSlots[i-1]})</option>`
+            })
+
+            instructor.forEach((i, j) => {
+                INS.innerHTML += `<option value="${j}">${i}</option>`
+            });
+
+            Days.forEach((i, j) => {
+                DAY.innerHTML += `<option value="${j}">${i}</option>`
+                Box.innerHTML += `<tr class="${i}" ><td>${Days[j]}</td></tr>`
+            })
+
+            
+        DAY.addEventListener('click',()=>{PER.value = 0})
+
+
+        }
+        populate()
+
+        let addRow = () => {
+            DATA[PER.value -1] = (new LECDATA(subjects[SUB.value],Lectures[PER.value -1],instructor[INS.value]));
+           let tr = document.querySelector(`.${Days[DAY.value]}`)
+           console.log(tr);
+           
+            tr.innerHTML += `
+                <td>${DATA[(PER.value -1)].Sub}  ${DATA[(PER.value -1)].ins}</td>
+                `
+                PER.value++
+
+        }
+
+        let render = () => {
+            Lectures.forEach(i => {
+                header.innerHTML += `<th>${i}</th>`
+
+            })
+            
+        }
+        render()
+
+
+    </script>
+
+</body>
+
+</html>
