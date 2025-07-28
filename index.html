@@ -32,7 +32,9 @@
             position: sticky;
             top:0px;
             font-size: 30px;
-            text-align: left;
+            justify-content: right;
+            display: flex;
+            flex-direction: row;
         }
 
 
@@ -48,6 +50,7 @@
         td {
             border: 2px solid blue;
             padding: 15px;
+            cursor: pointer;
         }
 
         select {
@@ -79,22 +82,57 @@ th{
             border-radius: 10px;
         }
 
-        .Actions{
-           position: absolute;
-           right: 0px;
+        .Actions , .configbox , .Downloadbox{
+            border: 1px solid white;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 20px;
+           
+        }
+
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        h1{
+            /* display: inline; */
+            position: fixed;
+            color: white;
+            z-index: 100;
+            font-size: 50px;
+            margin: 0px;
+            top: 6px;
+        }
+
+        .nav > * > span{
+            font-size: 15px;
         }
     </style>
 </head>
 
 <body>
-    <div class="nav">Timetable <div class="Actions" style="display:inline;">
+    <h1>
+        Timetable
+    </h1>
+    <div class="nav"> <div class="Actions" >
+        <span>Actions tab</span>
         <button class="reset" onclick="reset()">RESET</button>
         <input type="file" id="importJson" accept=".json">
-        <button onclick="downloadJSON(DATA, 'data.json')">Export as JSON</button>
+    </div>
+
+        <div class="Downloadbox">
+            <span>Download</span>
+            <button onclick="downloadJSON(DATA, 'data.json')">Export as JSON</button>
         <button onclick="downloadAsPNG()">Download PNG</button>
-<button onclick="downloadAsPDF()">Download PDF</button>
-<!-- <button onclick="downloadAsBWPDF()">Download B&W PDF</button> -->
-    </div></div>
+        <button onclick="downloadAsPDF()">Download PDF</button>
+        </div>
+        <div class="configbox">
+            <span>Configure</span>
+            <button><a href="./Dataadd.html">Configure</a>
+        </button>
+        <input type="file" id="configInput" accept=".json">
+        <button onclick="applyConfig()">Add Config</button>
+        </div></div>
     <div class="add">
         <select name="" id="DAY">
 
@@ -160,7 +198,7 @@ th{
             // Electrical Circuit & Analysis
         ];
 
-        const timeSlots = [
+        let timeSlots = [
             "8:10 – 9:00",
             "9:00–9:50",
             "9:50–10:40",
@@ -174,6 +212,18 @@ th{
         ];
 
 
+
+
+        let RenderConfigs = () => {
+            // Restore on page load
+Days = JSON.parse(localStorage.getItem("CONFIG_Days")) || Days;
+Lectures = JSON.parse(localStorage.getItem("CONFIG_Lectures")) || Lectures;
+subjects = JSON.parse(localStorage.getItem("CONFIG_subjects")) || subjects;
+instructor = JSON.parse(localStorage.getItem("CONFIG_instructor")) || instructor;
+timeSlots = JSON.parse(localStorage.getItem("CONFIG_timeSlots")) || timeSlots;
+
+        }
+RenderConfigs()
 
         let SUB = document.querySelector("#SUB");
         let PER = document.querySelector("#PER");
@@ -461,6 +511,90 @@ function downloadAsPDF() {
     });
     
 }
+
+function applyConfig() {
+    const fileInput = document.getElementById('configInput');
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert("Please select a config file.");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        try {
+            const config = JSON.parse(e.target.result);
+
+            // Overwrite existing arrays
+            Days = config.Days || Days;
+            Lectures = config.Lectures || Lectures;
+            subjects = config.Subjects || subjects;
+            instructor = config.Instructors || instructor;
+            timeSlots = config.TimeSlots || timeSlots;
+
+            console.log("Config applied successfully!");
+            console.log({ Days, Lectures, subjects, instructor, timeSlots });
+
+            alert("Config applied! Refresh or rerender your table if needed.");
+            
+        } catch (err) {
+            console.error("Invalid config file!", err);
+            alert("Failed to parse config file.");
+        }
+    };
+
+    reader.readAsText(file);
+}
+
+
+function applyConfig() {
+    const fileInput = document.getElementById('configInput');
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert("Please select a config file.");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        try {
+            const config = JSON.parse(e.target.result);
+
+            // Overwrite existing arrays
+            Days = config.Days || Days;
+            Lectures = config.Lectures || Lectures;
+            subjects = config.Subjects || subjects;
+            instructor = config.Instructors || instructor;
+            timeSlots = config.TimeSlots || timeSlots;
+
+            // ✅ Save to localStorage for persistence
+            localStorage.setItem("CONFIG_Days", JSON.stringify(Days));
+            localStorage.setItem("CONFIG_Lectures", JSON.stringify(Lectures));
+            localStorage.setItem("CONFIG_subjects", JSON.stringify(subjects));
+            localStorage.setItem("CONFIG_instructor", JSON.stringify(instructor));
+            localStorage.setItem("CONFIG_timeSlots", JSON.stringify(timeSlots));
+
+            console.log("Config applied and saved to localStorage!");
+            let permission = confirm("Configuration File Added Succesfully , Do You Want TO Reset Timetable");
+            if(permission){
+                reset();
+            }else{
+                location.reload();
+            }
+
+        } catch (err) {
+            console.error("Invalid config file!", err);
+            alert("Failed to parse config file.");
+        }
+    };
+
+    reader.readAsText(file);
+}
+
 
 // Download as B&W PDF       not required!
 // function downloadAsBWPDF() {
