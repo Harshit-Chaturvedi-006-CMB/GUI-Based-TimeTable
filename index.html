@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time-Table</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <!-- For converting HTML to Canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<!-- For generating PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 
     <style>
         body {
@@ -26,6 +32,7 @@
             position: sticky;
             top:0px;
             font-size: 30px;
+            text-align: left;
         }
 
 
@@ -84,6 +91,9 @@ th{
         <button class="reset" onclick="reset()">RESET</button>
         <input type="file" id="importJson" accept=".json">
         <button onclick="downloadJSON(DATA, 'data.json')">Export as JSON</button>
+        <button onclick="downloadAsPNG()">Download PNG</button>
+<button onclick="downloadAsPDF()">Download PDF</button>
+<!-- <button onclick="downloadAsBWPDF()">Download B&W PDF</button> -->
     </div></div>
     <div class="add">
         <select name="" id="DAY">
@@ -111,7 +121,7 @@ th{
 
     </div>
     <div class="Container">
-        <table>
+        <table id ="myTable">
             <thead>
                 <tr>
                     <th>PERIOD</th>
@@ -329,7 +339,7 @@ th{
                     let Associate = DATA[parent].find(obj => obj && obj.id == e.target.id);
 
                     if (Associate) {
-                        console.log(Associate); // For debug
+                        // console.log(Associate); // For debug
 
                         // Set DAY dropdown
                         // ✅ 1. Set DAY <select> (by visible text)
@@ -359,38 +369,33 @@ th{
 
 
         let Advlistener = document.querySelectorAll('td');
-        listener.forEach(i => {
-            i.addEventListener('click', (e) => {
+        Advlistener.forEach(i => {
+            i.addEventListener('dblclick', (e) => {
                 let parent = e.target.parentElement.className; // Gets the day like 'MONDAY'
 
                 if (Array.isArray(DATA[parent])) {
                     let Associate = DATA[parent].find(obj => obj && obj.id == e.target.id);
 
+                    // console.log(Associate);
                     if (Associate) {
-                        console.log(Associate); // For debug
-
-                        // Set DAY dropdown
-                        // ✅ 1. Set DAY <select> (by visible text)
-                        let dayIndex = Array.from(DAY.options).findIndex(opt => opt.text.trim() === parent.trim());
-                        if (dayIndex !== -1) DAY.selectedIndex = dayIndex;
-
-                        // Set SUBJECT dropdown by matching text
-                        let subIndex = Array.from(SUB.options).findIndex(opt => opt.text.trim() === Associate.Sub.trim());
-                        if (subIndex !== -1) SUB.selectedIndex = subIndex;
-
-                        // Set INSTRUCTOR dropdown by matching text
-                        let insIndex = Array.from(INS.options).findIndex(opt => opt.text.trim() === Associate.ins.trim());
-                        if (insIndex !== -1) INS.selectedIndex = insIndex;
-
-                        // Set CREDIT dropdown by matching value
-                        let credIndex = Array.from(CRED.options).findIndex(opt => opt.value == Associate.credit);
-                        if (credIndex !== -1) CRED.selectedIndex = credIndex;
-
-                        PER.value = Associate.Period + 1;
+                        // Remove the lecture from the array
+                        const idx = DATA[parent].findIndex(obj => obj && obj.id == e.target.id);
+                        if (idx !== -1) {
+                            DATA[parent][idx] = new LECDATA("NA", idx, "NA", 1, DATA[parent][idx].id);
+                            localStorage.setItem('LECTURE', JSON.stringify(DATA));
+                            location.reload();
+                        }
                     }
-                }
-            });
-        });
+                    }
+                })
+        })
+
+
+        let decolorize =  () => {
+            listener.forEach(i => {
+            i.style.backgroundColor = "white"
+        })
+        }
 
         function downloadJSON(data, filename) {
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
@@ -425,6 +430,58 @@ th{
 
             reader.readAsText(file);
         });
+
+        // Download as PNG
+function downloadAsPNG() {
+    decolorize();
+    html2canvas(document.querySelector("#myTable")).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "table.png";
+        link.href = canvas.toDataURL();
+        link.click();
+        location.reload()
+    });
+}
+
+// Download as Color PDF
+function downloadAsPDF() {
+    decolorize()
+    
+    html2canvas(document.querySelector("#myTable")).then(canvas => {
+        
+        const imgData = canvas.toDataURL("image/png");
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF();
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save("table.pdf");
+        location.reload()
+    });
+    
+}
+
+// Download as B&W PDF       not required!
+// function downloadAsBWPDF() {
+//     html2canvas(document.querySelector("#myTable"), {
+//         onclone: (doc) => {
+//             // Force B&W using filter
+//             const table = doc.querySelector("#myTable");
+//             table.style.filter = "grayscale(100%)";
+//         }
+//     }).then(canvas => {
+//         const imgData = canvas.toDataURL("image/png");
+//         const { jsPDF } = window.jspdf;
+//         const pdf = new jsPDF();
+//         const imgProps = pdf.getImageProperties(imgData);
+//         const pdfWidth = pdf.internal.pageSize.getWidth();
+//         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+//         pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+//         pdf.save("table_bw.pdf");
+//     });
+// }
+
 
 
 
