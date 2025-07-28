@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Configure Timetable Data</title>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h1{
+        font-size: 50px;
+        text-align: center;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 20px;
+      font-family: monospace;
+      font-size: 20px;
+      padding: 10px;;
+      border: 2px solid red;
+    }
+    label {
+      font-weight: bold;
+      font-size: 30px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+
+
+    
+  </style>
+</head>
+<body>
+
+  <h1>Configure Timetable Data</h1>
+
+  <div class="section">
+    <label for="days">Days (comma-separated):</label>
+    <textarea id="days">MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY</textarea>
+  </div>
+
+  <div class="section">
+    <label for="lectures">Lectures (comma-separated):</label>
+    <textarea id="lectures">1, 2, 3, 4, 5, 6, 7, 8, 9, 10</textarea>
+  </div>
+
+  <div class="section">
+    <label for="subjects">Subjects (comma-separated):</label>
+    <textarea id="subjects">Electronic Devices, Digital Electronics, Signals & Systems, Data Structures & Algorithms, * IoT Design, Electrical Circuit & Analysis, Cyber Law & Ethics, Design Thinking and Innovation-I, QAPD-I, Summer Internship-I, Constitution of India, BREAK, DSA LAB, ELectronics Devices Lab, MRIIRS 3ECE+EE APTI, MRIIRS 3ECE+EE Soft Skills, IOT Design Lab</textarea>
+  </div>
+
+  <div class="section">
+    <label for="instructors">Instructors (comma-separated):</label>
+    <textarea id="instructors">Dr. Vimlesh Singh, Dr. Pratima, Dr. Manish Mishra, Ms. Vibha ,Ms. Snigdha, Dr. Vandana, CSE(Spe.), Dr. Ashu Gautam, Dr. Amana Yadav, Dr. Umesh Dutta, NF, Dr. Leena G., O.A</textarea>
+  </div>
+
+  <div class="section">
+    <label for="timeslots">Time Slots (comma-separated):</label>
+    <textarea id="timeslots">8:10 – 9:00, 9:00–9:50, 9:50–10:40, 10:40–11:30, 11:30–12:20, 12:20–1:10, 1:10–2:00, 2:00–2:50, 2:50–3:40, 3:40–4:30</textarea>
+  </div>
+
+  <button onclick="generateJSON()">Download config.json</button>
+  <button onclick="generateandforeward()">Download config.json and Render Timetable</button>
+
+  <script>
+    function getArray(id) {
+      return document.getElementById(id)
+        .value
+        .split(",")
+        .map(item => item.trim())
+        .filter(item => item.length > 0);
+    }
+
+    function generateJSON() {
+      const data = {
+        Days: getArray("days"),
+        Lectures: getArray("lectures").map(Number), // parse as numbers
+        Subjects: getArray("subjects"),
+        Instructors: getArray("instructors"),
+        TimeSlots: getArray("timeslots")
+      };
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      saveAs(blob, "config.json");
+    };
+
+
+
+    let generateandforeward = () => {
+        generateJSON();
+        setTimeout(() => {window.location.href = "./index.html"},2000)
+    };
+  </script>
+
+</body>
+</html>
