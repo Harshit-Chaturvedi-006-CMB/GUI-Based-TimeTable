@@ -142,15 +142,15 @@
                 padding: 10px 0;
             }
 
-            .add {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                top: 23px;
-                padding-bottom: 10px;
-                position: sticky;
-                z-index: 20;
-            }
+    .add {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        top: 23px;
+        padding-bottom: 10px;
+        position: sticky;
+        z-index: 20;
+    }
 
             .add select,
             .add button {
@@ -255,8 +255,9 @@
 </body>
 <script>
     let ViewHide = false;
+    let ViewHidestr = "";
     if(localStorage.getItem('view')){
-        ViewHide = localStorage.getItem('view');
+        ViewHide = Boolean(localStorage.getItem('view'))
     }
     let day = new Date();
     // console.log(day.getDay());
@@ -704,19 +705,22 @@
 
 
 let ViewMode = () => {
-    let Overlays = document.querySelector('.add')
+    
+    localStorage.setItem('view', ViewHidestr);
+    location.reload();
+}
+
+let Overlays = document.querySelector('.add')
     let Overlays2 = document.querySelector('.nav');
     if (ViewHide) {
         Overlays.style.display = "";
         Overlays2.style.display = "";
-        ViewHide = false;
+        ViewHidestr = "";
     } else {
         Overlays.style.display = "none";
         Overlays2.style.display = "none";
-        ViewHide = true;
+        ViewHidestr = "true";
     }
-    localStorage.setItem('view', ViewHide);
-}
 
 
 
