@@ -77,7 +77,7 @@
       return document.getElementById(id)
         .value
         .split(",")
-        .map(item => item.trim())
+        .map(item => (item.trim() === "" ? " " : item.trim()))
         .filter(item => item.length > 0);
     }
 
