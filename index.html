@@ -7,10 +7,10 @@
     <title>Time-Table</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <!-- For converting HTML to Canvas -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-<!-- For generating PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- For generating PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 
     <style>
@@ -29,8 +29,8 @@
             color: rgb(255, 255, 255);
             padding: 10px;
             margin: 0px;
-            position: sticky;
-            top:0px;
+            position: relative;
+            /* top:0px; */
             font-size: 30px;
             justify-content: right;
             display: flex;
@@ -45,7 +45,7 @@
 
 
         }
-        
+
 
         td {
             border: 2px solid blue;
@@ -68,13 +68,15 @@
             color: #fafafa;
             width: 100%;
             height: 10%;
-            top: 30px;
+            top: 4px;
         }
-th{
-    position: sticky;
-    top:85px;
-    background-color: rgba(255, 255, 255, 0.852);
-}
+
+        th {
+            position: sticky;
+            top: 85px;
+            background-color: rgba(255, 255, 255, 0.852);
+        }
+
         select {
             padding: 5px;
             margin: 5px;
@@ -82,19 +84,22 @@ th{
             border-radius: 10px;
         }
 
-        .Actions , .configbox , .Downloadbox{
+        .Actions,
+        .configbox,
+        .Downloadbox {
             border: 1px solid white;
             padding: 10px;
             margin: 10px;
             border-radius: 20px;
-           
+
         }
 
-        a{
+        a {
             text-decoration: none;
             color: black;
         }
-        h1{
+
+        h1 {
             /* display: inline; */
             position: fixed;
             color: white;
@@ -104,81 +109,82 @@ th{
             top: 6px;
         }
 
-        .nav > * > span{
+        .nav>*>span {
             font-size: 15px;
         }
 
 
         @media screen and (max-width: 768px) {
-    h1 {
-        font-size: 24px;
-        top: 10px;
-        left: 10px;
-        position: absolute;
-    }
+            h1 {
+                font-size: 24px;
+                top: 10px;
+                left: 10px;
+                position: absolute;
+            }
 
-    .nav {
-        flex-direction: column;
-        font-size: 20px;
-        padding: 10px;
-        position: relative;
-    }
+            .nav {
+                flex-direction: column;
+                font-size: 20px;
+                padding: 10px;
+                position: relative;
+            }
 
-    .nav > div {
-        margin-bottom: 10px;
-    }
+            .nav>div {
+                margin-bottom: 10px;
+            }
 
-    .Downloadbox,
-    .configbox,
-    .Actions {
-        width: 100%;
-        font-size: 16px;
-        text-align: center;
-        padding: 10px 0;
-    }
+            .Downloadbox,
+            .configbox,
+            .Actions {
+                width: 100%;
+                font-size: 16px;
+                text-align: center;
+                padding: 10px 0;
+            }
 
-    .add {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        top: 180px;
-        padding-bottom: 10px;
-        position: sticky;
-        z-index: 20;
-    }
+            .add {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                top: 23px;
+                padding-bottom: 10px;
+                position: sticky;
+                z-index: 20;
+            }
 
-    .add select,
-    .add button {
-        margin: 5px;
-        font-size: 16px;
-        padding: 5px 10px;
-        width: 45%;
-    }
+            .add select,
+            .add button {
+                margin: 5px;
+                font-size: 16px;
+                padding: 5px 10px;
+                width: 45%;
+            }
 
-    table {
-        font-size: 12px;
-        width: 100%;
-    }
+            table {
+                font-size: 12px;
+                width: 100%;
+            }
 
-    th,
-    td {
-        padding: 8px;
-        font-size: 12px;
-    }
+            th,
+            td {
+                padding: 8px;
+                font-size: 12px;
+            }
 
-    th {
-        top: 0px; /* adjust if your sticky header overlaps */
-    }
+            th {
+                top: 0px;
+                /* adjust if your sticky header overlaps */
+            }
 
-    .Container {
-        overflow-x: auto;
-    }
+            .Container {
+                overflow-x: auto;
+            }
 
-    #myTable {
-        min-width: 600px; /* Make sure table doesn't shrink too small */
-    }
-}
-
+            #myTable {
+                min-width: 600px;
+                /* Make sure table doesn't shrink too small */
+            }
+        }
     </style>
 </head>
 
@@ -186,25 +192,27 @@ th{
     <h1>
         Timetable
     </h1>
-    <div class="nav"> <div class="Actions" >
-        <span>Actions tab</span>
-        <button class="reset" onclick="reset()">RESET</button>
-        <input type="file" id="importJson" accept=".json">
-    </div>
+    <div class="nav">
+        <div class="Actions">
+            <span>Actions tab</span>
+            <button class="reset" onclick="reset()">RESET</button>
+            <input type="file" id="importJson" accept=".json">
+        </div>
 
         <div class="Downloadbox">
             <span>Download</span>
             <button onclick="downloadJSON(DATA, 'data.json')">Export as JSON</button>
-        <button onclick="downloadAsPNG()">Download PNG</button>
-        <button onclick="downloadAsPDF()">Download PDF</button>
+            <button onclick="downloadAsPNG()">Download PNG</button>
+            <button onclick="downloadAsPDF()">Download PDF</button>
         </div>
         <div class="configbox">
             <span>Configure</span>
             <button><a href="./Dataadd.html">Configure</a>
-        </button>
-        <input type="file" id="configInput" accept=".json">
-        <button onclick="applyConfig()">Add Config</button>
-        </div></div>
+            </button>
+            <input type="file" id="configInput" accept=".json">
+            <button onclick="applyConfig()">Add Config</button>
+        </div>
+    </div>
     <div class="add">
         <select name="" id="DAY">
 
@@ -231,7 +239,7 @@ th{
 
     </div>
     <div class="Container">
-        <table id ="myTable">
+        <table id="myTable">
             <thead>
                 <tr>
                     <th>PERIOD</th>
@@ -241,461 +249,480 @@ th{
 
             </tbody>
         </table>
-        
+<button class="view" onclick="ViewMode()">View Only</button>
     </div>
-    <script>
-        let day = new Date();
-        // console.log(day.getDay());
-        let databoxes;
-        let x;
-        let CRED = document.querySelector('#CRED');
-        let Box = document.querySelector('#ContentArea');
-        let header = document.querySelector('tr');
-        let Days = ["MONDAY", "TUESDAY", "WEDENESDAY", "THURSDAY", "FRIDAY"]
-        let Lectures = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        let subjects = ["Electronic Devices", "Digital Electronics", "Signals & Systems", "Data Structures & Algorithms", "* IoT Design ", "Electrical Circuit & Analysis", "Cyber Law & Ethics", "Design Thinking and Innovation-I", "QAPD-I", "Summer Internship-I", "Constitution of India", "BREAK", "DSA LAB", "ELectronics Devices Lab", "MRIIRS 3ECE+EE APTI", "MRIIRS 3ECE+EE Soft Skills", "IOT Design Lab", "    "];
-        let instructor = [
-            "Dr. Vimlesh Singh",                // Electronic Devices
-            "Dr. Pratima",                      // Digital Electronics
-            "Dr. Manish Mishra",                // Signals & Systems
-            "Ms. Vibha ,Ms. Snigdha",       // QAPD-I
-            "Dr. Vandana, CSE(Spe.)",           // Data Structures & Algorithms and Cyber Law & Ethics
-            "Dr. Ashu Gautam",                  // Design Thinking and Innovation-I
-            "Dr. Amana Yadav",                  // Summer Internship-I
-            "Dr. Umesh Dutta",                  // IoT Design
-            "NF",                               // Constitution of India
-            "Dr. Leena G.",
-            "O.A",
-            "  "
-            // Electrical Circuit & Analysis
-        ];
+    
+</body>
+<script>
+    let ViewHide = false;
+    if(localStorage.getItem('view')){
+        ViewHide = localStorage.getItem('view');
+    }
+    let day = new Date();
+    // console.log(day.getDay());
+    let databoxes;
+    let x;
+    let CRED = document.querySelector('#CRED');
+    let Box = document.querySelector('#ContentArea');
+    let header = document.querySelector('tr');
+    let Days = ["MONDAY", "TUESDAY", "WEDENESDAY", "THURSDAY", "FRIDAY"]
+    let Lectures = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    let subjects = ["Electronic Devices", "Digital Electronics", "Signals & Systems", "Data Structures & Algorithms", "* IoT Design ", "Electrical Circuit & Analysis", "Cyber Law & Ethics", "Design Thinking and Innovation-I", "QAPD-I", "Summer Internship-I", "Constitution of India", "BREAK", "DSA LAB", "ELectronics Devices Lab", "MRIIRS 3ECE+EE APTI", "MRIIRS 3ECE+EE Soft Skills", "IOT Design Lab", "    "];
+    let instructor = [
+        "Dr. Vimlesh Singh",                // Electronic Devices
+        "Dr. Pratima",                      // Digital Electronics
+        "Dr. Manish Mishra",                // Signals & Systems
+        "Ms. Vibha ,Ms. Snigdha",       // QAPD-I
+        "Dr. Vandana, CSE(Spe.)",           // Data Structures & Algorithms and Cyber Law & Ethics
+        "Dr. Ashu Gautam",                  // Design Thinking and Innovation-I
+        "Dr. Amana Yadav",                  // Summer Internship-I
+        "Dr. Umesh Dutta",                  // IoT Design
+        "NF",                               // Constitution of India
+        "Dr. Leena G.",
+        "O.A",
+        "  "
+        // Electrical Circuit & Analysis
+    ];
 
-        let timeSlots = [
-            "8:10 – 9:00",
-            "9:00–9:50",
-            "9:50–10:40",
-            "10:40–11:30",
-            "11:30–12:20",
-            "12:20–1:10",
-            "1:10–2:00",
-            "2:00–2:50",
-            "2:50–3:40",
-            "3:40–4:30"
-        ];
-
-
-
-
-        let RenderConfigs = () => {
-            // Restore on page load
-Days = JSON.parse(localStorage.getItem("CONFIG_Days")) || Days;
-Lectures = JSON.parse(localStorage.getItem("CONFIG_Lectures")) || Lectures;
-subjects = JSON.parse(localStorage.getItem("CONFIG_subjects")) || subjects;
-instructor = JSON.parse(localStorage.getItem("CONFIG_instructor")) || instructor;
-timeSlots = JSON.parse(localStorage.getItem("CONFIG_timeSlots")) || timeSlots;
-
-        }
-RenderConfigs()
-
-        let SUB = document.querySelector("#SUB");
-        let PER = document.querySelector("#PER");
-        let DATA = new Object;
-        let INS = document.querySelector("#INS");
-        let DAY = document.querySelector('#DAY');
-
-        class LECDATA {
-            constructor(s, n, ins, c, id) {
-                this.Sub = s;
-                this.Period = n;
-                this.ins = ins;
-                this.credit = c;
-                this.id = id;
-
-            }
-
-        }
+    let timeSlots = [
+        "8:10 – 9:00",
+        "9:00–9:50",
+        "9:50–10:40",
+        "10:40–11:30",
+        "11:30–12:20",
+        "12:20–1:10",
+        "1:10–2:00",
+        "2:00–2:50",
+        "2:50–3:40",
+        "3:40–4:30"
+    ];
 
 
 
 
+    let RenderConfigs = () => {
+        // Restore on page load
+        Days = JSON.parse(localStorage.getItem("CONFIG_Days")) || Days;
+        Lectures = JSON.parse(localStorage.getItem("CONFIG_Lectures")) || Lectures;
+        subjects = JSON.parse(localStorage.getItem("CONFIG_subjects")) || subjects;
+        instructor = JSON.parse(localStorage.getItem("CONFIG_instructor")) || instructor;
+        timeSlots = JSON.parse(localStorage.getItem("CONFIG_timeSlots")) || timeSlots;
 
-        let populate = () => {
-            subjects.forEach((i, j) => {
-                SUB.innerHTML += `<option value="${j}">${i}</option>`
+    }
+    RenderConfigs()
 
-            })
+    let SUB = document.querySelector("#SUB");
+    let PER = document.querySelector("#PER");
+    let DATA = new Object;
+    let INS = document.querySelector("#INS");
+    let DAY = document.querySelector('#DAY');
 
-            Lectures.forEach(i => {
-                PER.innerHTML += `<option value="${i}">${i}(${timeSlots[i - 1]})</option>`
-            })
-
-            instructor.forEach((i, j) => {
-                INS.innerHTML += `<option value="${j}">${i}</option>`
-            });
-
-            Days.forEach((i, j) => {
-                DAY.innerHTML += `<option value="${j}">${i}</option>`
-                Box.innerHTML += `<tr class="${i}" ><td>${Days[j]}</td></tr>`
-                if (j === (day.getDay() - 1)) {
-                    document.querySelector(`.${i}`).style.backgroundColor = " rgba(131, 253, 0, 0.7)";
-                };
-
-                if (j === (day.getDay())) {
-                    document.querySelector(`.${i}`).style.backgroundColor = " yellow";
-                }
-            })
-
-
-            DAY.addEventListener('click', () => { PER.value = 1 });
-            //              databoxes = document.querySelectorAll('td');
-            //  x  = Array.from(databoxes);
-            //  console.log(x)
-
-
-
-        }
-        populate()
-
-        let addRow = () => {
-            let CurDay = Days[DAY.value];
-            if (!DATA[CurDay]) {
-                DATA[CurDay] = new Array(Lectures.length)
-            }
-            let genID = Math.floor(Math.random() * 10000000);
-            DATA[CurDay][PER.value - 1] = new LECDATA(subjects[SUB.value], Lectures[PER.value - 1], instructor[INS.value], CRED.value, genID);
-
-            // Box.innerHTML = "";
-
-            //    let tr = document.querySelector(`.${Days[DAY.value]}`)
-            //    console.log(tr);
-
-            //     tr.innerHTML += `
-            //         <td>${DATA[(PER.value -1)].Sub}  ${DATA[(PER.value -1)].ins}</td>
-            //         `
-            let perNum = Number(PER.value);
-            if (!isNaN(perNum) && perNum < 10) {
-                PER.value = String(perNum + 1);
-            }
-            localStorage.setItem('LECTURE', JSON.stringify(DATA));
-            location.reload();
-
-
-        }
-        let reset = () => {
-            Days.forEach((i, j) => {
-                DATA[i] = new Array(Lectures.length); // Initialize array for each day
-                Lectures.forEach((u, k) => {
-                    let GENID = (Math.floor(Math.random() * 10000000))
-                    DATA[i][k] = new LECDATA("NA", k, "NA", 1, GENID)
-
-                })
-            }
-
-            )
-            localStorage.setItem('LECTURE', JSON.stringify(DATA));
-            location.reload()
+    class LECDATA {
+        constructor(s, n, ins, c, id) {
+            this.Sub = s;
+            this.Period = n;
+            this.ins = ins;
+            this.credit = c;
+            this.id = id;
 
         }
 
-        let render = () => {
-            if (localStorage.getItem('LECTURE')) {
-                DATA = JSON.parse(localStorage.getItem('LECTURE'))
-            } else {
-
-                reset()
-
-            }
-
-            Lectures.forEach(i => {
-                header.innerHTML += `<th>${i}<br>${timeSlots[i - 1]}</th>`
-
-            })
+    }
 
 
 
 
 
-            Days.forEach(i => {
-                if (DATA[i]) {
-                    let limit = 0;
-                    let tr = document.querySelector(`.${i}`);
-                    // tr.innerHTML = ""; // Clear previous contents
+    let populate = () => {
+        subjects.forEach((i, j) => {
+            SUB.innerHTML += `<option value="${j}">${i}</option>`
 
-                    DATA[i].forEach(j => {
-                        if (j != null && j != undefined) {
-                            if (limit + Number(j.credit) <= 10) {
-                                tr.innerHTML += `<td id="${j.id}" colspan="${j.credit}">${j.Sub}<hr>${j.ins}</td>`;
-                                limit += Number(j.credit);
-                                // console.log(typeof(j.credit),"this one")
-                            } else {
-                                console.warn(`Limit reached for ${i} row`);
-                            }
-                        }
-                    });
-                } else {
-                    console.error("value not found for", i);
-                }
-            });
-
-
-        }
-        render();
-
-        let listener = document.querySelectorAll('td');
-        listener.forEach(i => {
-
-
-
-            i.addEventListener('click', (e) => {
-                let parent = e.target.parentElement.className; // Gets the day like 'MONDAY'
-                // console.log(e.target)
-                listener.forEach(cell => {
-            cell.style.backgroundColor = "";
-            cell.style.border = "";
-        });
-                e.target.style.backgroundColor = "#0686e288";
-                e.target.style.border = "2px solid black"
-
-
-                if (Array.isArray(DATA[parent])) {
-                    let Associate = DATA[parent].find(obj => obj && obj.id == e.target.id);
-
-                    if (Associate) {
-                        // console.log(Associate); // For debug
-
-                        // Set DAY dropdown
-                        // ✅ 1. Set DAY <select> (by visible text)
-                        let dayIndex = Array.from(DAY.options).findIndex(opt => opt.text.trim() === parent.trim());
-                        if (dayIndex !== -1) DAY.selectedIndex = dayIndex;
-
-                        // Set SUBJECT dropdown by matching text
-                        let subIndex = Array.from(SUB.options).findIndex(opt => opt.text.trim() === Associate.Sub.trim());
-                        if (subIndex !== -1) SUB.selectedIndex = subIndex;
-
-                        // Set INSTRUCTOR dropdown by matching text
-                        let insIndex = Array.from(INS.options).findIndex(opt => opt.text.trim() === Associate.ins.trim());
-                        if (insIndex !== -1) INS.selectedIndex = insIndex;
-
-                        // Set CREDIT dropdown by matching value
-                        let credIndex = Array.from(CRED.options).findIndex(opt => opt.value == Associate.credit);
-                        if (credIndex !== -1) CRED.selectedIndex = credIndex;
-
-                        PER.value = Associate.Period + 1;
-                    }
-                }
-            });
-        });
-
-
-
-
-
-        let Advlistener = document.querySelectorAll('td');
-        Advlistener.forEach(i => {
-            i.addEventListener('dblclick', (e) => {
-                let parent = e.target.parentElement.className; // Gets the day like 'MONDAY'
-
-                if (Array.isArray(DATA[parent])) {
-                    let Associate = DATA[parent].find(obj => obj && obj.id == e.target.id);
-
-                    // console.log(Associate);
-                    if (Associate) {
-                        // Remove the lecture from the array
-                        const idx = DATA[parent].findIndex(obj => obj && obj.id == e.target.id);
-                        if (idx !== -1) {
-                            DATA[parent][idx] = new LECDATA("NA", idx, "NA", 1, DATA[parent][idx].id);
-                            localStorage.setItem('LECTURE', JSON.stringify(DATA));
-                            location.reload();
-                        }
-                    }
-                    }
-                })
         })
 
-
-        let decolorize =  () => {
-            listener.forEach(i => {
-            i.style.backgroundColor = "white"
+        Lectures.forEach(i => {
+            PER.innerHTML += `<option value="${i}">${i}(${timeSlots[i - 1]})</option>`
         })
-        }
 
-        function downloadJSON(data, filename) {
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-            saveAs(blob, filename);
-        }
+        instructor.forEach((i, j) => {
+            INS.innerHTML += `<option value="${j}">${i}</option>`
+        });
 
-
-        document.getElementById("importJson").addEventListener("change", function (event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    console.log("Imported Data:", importedData);
-
-                    // Now set it to DATA or localStorage
-                    localStorage.setItem("LECTURE", JSON.stringify(importedData));
-                    DATA = importedData;
-
-                    // Optionally re-render your UI
-                    // render();
-                    location.reload()
-
-                } catch (err) {
-                    alert("Invalid JSON file");
-                    console.error("Error parsing JSON:", err);
-                }
+        Days.forEach((i, j) => {
+            DAY.innerHTML += `<option value="${j}">${i}</option>`
+            Box.innerHTML += `<tr class="${i}" ><td>${Days[j]}</td></tr>`
+            if (j === (day.getDay() - 1)) {
+                document.querySelector(`.${i}`).style.backgroundColor = " rgba(131, 253, 0, 0.7)";
             };
 
-            reader.readAsText(file);
+            if (j === (day.getDay())) {
+                document.querySelector(`.${i}`).style.backgroundColor = " yellow";
+            }
+        })
+
+
+        DAY.addEventListener('click', () => { PER.value = 1 });
+        //              databoxes = document.querySelectorAll('td');
+        //  x  = Array.from(databoxes);
+        //  console.log(x)
+
+
+
+    }
+    populate()
+
+    let addRow = () => {
+        let CurDay = Days[DAY.value];
+        if (!DATA[CurDay]) {
+            DATA[CurDay] = new Array(Lectures.length)
+        }
+        let genID = Math.floor(Math.random() * 10000000);
+        DATA[CurDay][PER.value - 1] = new LECDATA(subjects[SUB.value], Lectures[PER.value - 1], instructor[INS.value], CRED.value, genID);
+
+        // Box.innerHTML = "";
+
+        //    let tr = document.querySelector(`.${Days[DAY.value]}`)
+        //    console.log(tr);
+
+        //     tr.innerHTML += `
+        //         <td>${DATA[(PER.value -1)].Sub}  ${DATA[(PER.value -1)].ins}</td>
+        //         `
+        let perNum = Number(PER.value);
+        if (!isNaN(perNum) && perNum < 10) {
+            PER.value = String(perNum + 1);
+        }
+        localStorage.setItem('LECTURE', JSON.stringify(DATA));
+        location.reload();
+
+
+    }
+    let reset = () => {
+        Days.forEach((i, j) => {
+            DATA[i] = new Array(Lectures.length); // Initialize array for each day
+            Lectures.forEach((u, k) => {
+                let GENID = (Math.floor(Math.random() * 10000000))
+                DATA[i][k] = new LECDATA("NA", k, "NA", 1, GENID)
+
+            })
+        }
+
+        )
+        localStorage.setItem('LECTURE', JSON.stringify(DATA));
+        location.reload()
+
+    }
+
+    let render = () => {
+        if (localStorage.getItem('LECTURE')) {
+            DATA = JSON.parse(localStorage.getItem('LECTURE'))
+        } else {
+
+            reset()
+
+        }
+
+        Lectures.forEach(i => {
+            header.innerHTML += `<th>${i}<br>${timeSlots[i - 1]}</th>`
+
+        })
+
+
+
+
+
+        Days.forEach(i => {
+            if (DATA[i]) {
+                let limit = 0;
+                let tr = document.querySelector(`.${i}`);
+                // tr.innerHTML = ""; // Clear previous contents
+
+                DATA[i].forEach(j => {
+                    if (j != null && j != undefined) {
+                        if (limit + Number(j.credit) <= 10) {
+                            tr.innerHTML += `<td id="${j.id}" colspan="${j.credit}">${j.Sub}<hr>${j.ins}</td>`;
+                            limit += Number(j.credit);
+                            // console.log(typeof(j.credit),"this one")
+                        } else {
+                            console.warn(`Limit reached for ${i} row`);
+                        }
+                    }
+                });
+            } else {
+                console.error("value not found for", i);
+            }
         });
 
-        // Download as PNG
-function downloadAsPNG() {
-    decolorize();
-    html2canvas(document.querySelector("#myTable")).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "table.png";
-        link.href = canvas.toDataURL();
-        link.click();
-        location.reload()
-    });
-}
 
-// Download as Color PDF
-function downloadAsPDF() {
-    decolorize()
-    
-    html2canvas(document.querySelector("#myTable")).then(canvas => {
-        
-        const imgData = canvas.toDataURL("image/png");
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-        pdf.save("table.pdf");
-        location.reload()
-    });
-    
-}
-
-function applyConfig() {
-    const fileInput = document.getElementById('configInput');
-    const file = fileInput.files[0];
-
-    if (!file) {
-        alert("Please select a config file.");
-        return;
     }
+    render();
 
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-        try {
-            const config = JSON.parse(e.target.result);
-
-            // Overwrite existing arrays
-            Days = config.Days || Days;
-            Lectures = config.Lectures || Lectures;
-            subjects = config.Subjects || subjects;
-            instructor = config.Instructors || instructors;
-            timeSlots = config.TimeSlots || timeSlots;
-
-            console.log("Config applied successfully!");
-            console.log({ Days, Lectures, subjects, instructor, timeSlots });
-
-            alert("Config applied! Refresh or rerender your table if needed.");
-            
-        } catch (err) {
-            console.error("Invalid config file!", err);
-            alert("Failed to parse config file.");
-        }
-    };
-
-    reader.readAsText(file);
-}
+    let listener = document.querySelectorAll('td');
+    listener.forEach(i => {
 
 
-function applyConfig() {
-    const fileInput = document.getElementById('configInput');
-    const file = fileInput.files[0];
 
-    if (!file) {
-        alert("Please select a config file.");
-        return;
-    }
+        i.addEventListener('click', (e) => {
+            let parent = e.target.parentElement.className; // Gets the day like 'MONDAY'
+            // console.log(e.target)
+            listener.forEach(cell => {
+                cell.style.backgroundColor = "";
+                cell.style.border = "";
+            });
+            e.target.style.backgroundColor = "#0686e288";
+            e.target.style.border = "2px solid black"
 
-    const reader = new FileReader();
 
-    reader.onload = (e) => {
-        try {
-            const config = JSON.parse(e.target.result);
+            if (Array.isArray(DATA[parent])) {
+                let Associate = DATA[parent].find(obj => obj && obj.id == e.target.id);
 
-            // Overwrite existing arrays
-            Days = config.Days || Days;
-            Lectures = config.Lectures || Lectures;
-            subjects = config.Subjects || subjects;
-            instructor = config.Instructors || instructor;
-            timeSlots = config.TimeSlots || timeSlots;
+                if (Associate) {
+                    // console.log(Associate); // For debug
 
-            // ✅ Save to localStorage for persistence
-            localStorage.setItem("CONFIG_Days", JSON.stringify(Days));
-            localStorage.setItem("CONFIG_Lectures", JSON.stringify(Lectures));
-            localStorage.setItem("CONFIG_subjects", JSON.stringify(subjects));
-            localStorage.setItem("CONFIG_instructor", JSON.stringify(instructor));
-            localStorage.setItem("CONFIG_timeSlots", JSON.stringify(timeSlots));
+                    // Set DAY dropdown
+                    // ✅ 1. Set DAY <select> (by visible text)
+                    let dayIndex = Array.from(DAY.options).findIndex(opt => opt.text.trim() === parent.trim());
+                    if (dayIndex !== -1) DAY.selectedIndex = dayIndex;
 
-            console.log("Config applied and saved to localStorage!");
-            let permission = confirm("Configuration File Added Succesfully , Do You Want TO Reset Timetable");
-            if(permission){
-                reset();
-            }else{
-                location.reload();
+                    // Set SUBJECT dropdown by matching text
+                    let subIndex = Array.from(SUB.options).findIndex(opt => opt.text.trim() === Associate.Sub.trim());
+                    if (subIndex !== -1) SUB.selectedIndex = subIndex;
+
+                    // Set INSTRUCTOR dropdown by matching text
+                    let insIndex = Array.from(INS.options).findIndex(opt => opt.text.trim() === Associate.ins.trim());
+                    if (insIndex !== -1) INS.selectedIndex = insIndex;
+
+                    // Set CREDIT dropdown by matching value
+                    let credIndex = Array.from(CRED.options).findIndex(opt => opt.value == Associate.credit);
+                    if (credIndex !== -1) CRED.selectedIndex = credIndex;
+
+                    PER.value = Associate.Period + 1;
+                }
             }
+        });
+    });
 
-        } catch (err) {
-            console.error("Invalid config file!", err);
-            alert("Failed to parse config file.");
+
+
+
+
+    let Advlistener = document.querySelectorAll('td');
+    Advlistener.forEach(i => {
+        i.addEventListener('dblclick', (e) => {
+            let parent = e.target.parentElement.className; // Gets the day like 'MONDAY'
+
+            if (Array.isArray(DATA[parent])) {
+                let Associate = DATA[parent].find(obj => obj && obj.id == e.target.id);
+
+                // console.log(Associate);
+                if (Associate) {
+                    // Remove the lecture from the array
+                    const idx = DATA[parent].findIndex(obj => obj && obj.id == e.target.id);
+                    if (idx !== -1) {
+                        DATA[parent][idx] = new LECDATA("NA", idx, "NA", 1, DATA[parent][idx].id);
+                        localStorage.setItem('LECTURE', JSON.stringify(DATA));
+                        location.reload();
+                    }
+                }
+            }
+        })
+    })
+
+
+    let decolorize = () => {
+        listener.forEach(i => {
+            i.style.backgroundColor = "white"
+        })
+    }
+
+    function downloadJSON(data, filename) {
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+        saveAs(blob, filename);
+    }
+
+
+    document.getElementById("importJson").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                console.log("Imported Data:", importedData);
+
+                // Now set it to DATA or localStorage
+                localStorage.setItem("LECTURE", JSON.stringify(importedData));
+                DATA = importedData;
+
+                // Optionally re-render your UI
+                // render();
+                location.reload()
+
+            } catch (err) {
+                alert("Invalid JSON file");
+                console.error("Error parsing JSON:", err);
+            }
+        };
+
+        reader.readAsText(file);
+    });
+
+    // Download as PNG
+    function downloadAsPNG() {
+        decolorize();
+        html2canvas(document.querySelector("#myTable")).then(canvas => {
+            const link = document.createElement("a");
+            link.download = "table.png";
+            link.href = canvas.toDataURL();
+            link.click();
+            location.reload()
+        });
+    }
+
+    // Download as Color PDF
+    function downloadAsPDF() {
+        decolorize()
+
+        html2canvas(document.querySelector("#myTable")).then(canvas => {
+
+            const imgData = canvas.toDataURL("image/png");
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            pdf.save("table.pdf");
+            location.reload()
+        });
+
+    }
+
+    function applyConfig() {
+        const fileInput = document.getElementById('configInput');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert("Please select a config file.");
+            return;
         }
-    };
 
-    reader.readAsText(file);
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            try {
+                const config = JSON.parse(e.target.result);
+
+                // Overwrite existing arrays
+                Days = config.Days || Days;
+                Lectures = config.Lectures || Lectures;
+                subjects = config.Subjects || subjects;
+                instructor = config.Instructors || instructors;
+                timeSlots = config.TimeSlots || timeSlots;
+
+                console.log("Config applied successfully!");
+                console.log({ Days, Lectures, subjects, instructor, timeSlots });
+
+                alert("Config applied! Refresh or rerender your table if needed.");
+
+            } catch (err) {
+                console.error("Invalid config file!", err);
+                alert("Failed to parse config file.");
+            }
+        };
+
+        reader.readAsText(file);
+    }
+
+
+    function applyConfig() {
+        const fileInput = document.getElementById('configInput');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert("Please select a config file.");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            try {
+                const config = JSON.parse(e.target.result);
+
+                // Overwrite existing arrays
+                Days = config.Days || Days;
+                Lectures = config.Lectures || Lectures;
+                subjects = config.Subjects || subjects;
+                instructor = config.Instructors || instructor;
+                timeSlots = config.TimeSlots || timeSlots;
+
+                // ✅ Save to localStorage for persistence
+                localStorage.setItem("CONFIG_Days", JSON.stringify(Days));
+                localStorage.setItem("CONFIG_Lectures", JSON.stringify(Lectures));
+                localStorage.setItem("CONFIG_subjects", JSON.stringify(subjects));
+                localStorage.setItem("CONFIG_instructor", JSON.stringify(instructor));
+                localStorage.setItem("CONFIG_timeSlots", JSON.stringify(timeSlots));
+
+                console.log("Config applied and saved to localStorage!");
+                let permission = confirm("Configuration File Added Succesfully , Do You Want TO Reset Timetable");
+                if (permission) {
+                    reset();
+                } else {
+                    location.reload();
+                }
+
+            } catch (err) {
+                console.error("Invalid config file!", err);
+                alert("Failed to parse config file.");
+            }
+        };
+
+        reader.readAsText(file);
+    }
+
+
+    // Download as B&W PDF       not required!
+    // function downloadAsBWPDF() {
+    //     html2canvas(document.querySelector("#myTable"), {
+    //         onclone: (doc) => {
+    //             // Force B&W using filter
+    //             const table = doc.querySelector("#myTable");
+    //             table.style.filter = "grayscale(100%)";
+    //         }
+    //     }).then(canvas => {
+    //         const imgData = canvas.toDataURL("image/png");
+    //         const { jsPDF } = window.jspdf;
+    //         const pdf = new jsPDF();
+    //         const imgProps = pdf.getImageProperties(imgData);
+    //         const pdfWidth = pdf.internal.pageSize.getWidth();
+    //         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    //         pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    //         pdf.save("table_bw.pdf");
+    //     });
+    // }
+
+
+let ViewMode = () => {
+    let Overlays = document.querySelector('.add')
+    let Overlays2 = document.querySelector('.nav');
+    if (ViewHide) {
+        Overlays.style.display = "";
+        Overlays2.style.display = "";
+        ViewHide = false;
+    } else {
+        Overlays.style.display = "none";
+        Overlays2.style.display = "none";
+        ViewHide = true;
+    }
+    localStorage.setItem('view', ViewHide);
 }
 
 
-// Download as B&W PDF       not required!
-// function downloadAsBWPDF() {
-//     html2canvas(document.querySelector("#myTable"), {
-//         onclone: (doc) => {
-//             // Force B&W using filter
-//             const table = doc.querySelector("#myTable");
-//             table.style.filter = "grayscale(100%)";
-//         }
-//     }).then(canvas => {
-//         const imgData = canvas.toDataURL("image/png");
-//         const { jsPDF } = window.jspdf;
-//         const pdf = new jsPDF();
-//         const imgProps = pdf.getImageProperties(imgData);
-//         const pdfWidth = pdf.internal.pageSize.getWidth();
-//         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-//         pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-//         pdf.save("table_bw.pdf");
-//     });
-// }
 
 
+</script>
 
 
-
-
-
-    </script>
-
-</body>
 
 </html>
