@@ -113,8 +113,23 @@
             font-size: 15px;
         }
 
+        .shield {
+            /* border: 2px solid black; */
+            position: fixed;
+            height: 95vh;
+            width: 100vw;
+            z-index: 200;
+            background-color: transparent;
+        }
+
 
         @media screen and (max-width: 768px) {
+
+            .shield {
+                height: 89vh;
+
+            }
+
             h1 {
                 font-size: 24px;
                 top: 10px;
@@ -142,15 +157,15 @@
                 padding: 10px 0;
             }
 
-    .add {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        top: 23px;
-        padding-bottom: 10px;
-        position: sticky;
-        z-index: 20;
-    }
+            .add {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                top: 23px;
+                padding-bottom: 10px;
+                position: sticky;
+                z-index: 20;
+            }
 
             .add select,
             .add button {
@@ -189,6 +204,7 @@
 </head>
 
 <body>
+    <div class="shield">hello</div>
     <h1>
         Timetable
     </h1>
@@ -249,14 +265,14 @@
 
             </tbody>
         </table>
-<button class="view" onclick="ViewMode()">View Only</button>
+        <button class="view" onclick="ViewMode()">View Only</button>
     </div>
-    
+
 </body>
 <script>
     let ViewHide = false;
     let ViewHidestr = "";
-    if(localStorage.getItem('view')){
+    if (localStorage.getItem('view')) {
         ViewHide = Boolean(localStorage.getItem('view'))
     }
     let day = new Date();
@@ -704,23 +720,27 @@
     // }
 
 
-let ViewMode = () => {
-    
-    localStorage.setItem('view', ViewHidestr);
-    location.reload();
-}
+    let ViewMode = () => {
 
-let Overlays = document.querySelector('.add')
+        localStorage.setItem('view', ViewHidestr);
+        location.reload();
+    }
+    let Kavach = document.querySelector('.shield')
+    let Overlays = document.querySelector('.add')
     let Overlays2 = document.querySelector('.nav');
     if (ViewHide) {
         Overlays.style.display = "";
         Overlays2.style.display = "";
         ViewHidestr = "";
+        Kavach.style.display  = "none";
     } else {
+        Kavach.style.display = ""
         Overlays.style.display = "none";
         Overlays2.style.display = "none";
         ViewHidestr = "true";
     }
+
+
 
 
 
