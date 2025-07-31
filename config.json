@@ -1,0 +1,69 @@
+{
+  "Days": [
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY"
+  ],
+  "Lectures": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "Subjects": [
+    "Electronic Devices",
+    "Digital Electronics",
+    "Signals & Systems",
+    "Data Structures & Algorithms",
+    "* IoT Design",
+    "Electrical Circuit & Analysis",
+    "Cyber Law & Ethics",
+    "Design Thinking and Innovation-I",
+    "QAPD-I",
+    "Summer Internship-I",
+    "Constitution of India",
+    "BREAK",
+    "DSA LAB",
+    "ELectronics Devices Lab",
+    "MRIIRS 3ECE+EE APTI",
+    "MRIIRS 3ECE+EE Soft Skills",
+    "IOT Design Lab",
+    " "
+  ],
+  "Instructors": [
+    "Dr. Vimlesh Singh",
+    "Dr. Pratima",
+    "Dr. Manish Mishra",
+    "Ms. Vibha",
+    "Ms. Snigdha",
+    "Dr. Vandana",
+    "CSE(Spe.)",
+    "Dr. Ashu Gautam",
+    "Dr. Amana Yadav",
+    "Dr. Umesh Dutta",
+    "NF",
+    "Dr. Leena G.",
+    "O.A",
+    " "
+  ],
+  "TimeSlots": [
+    "8:10 – 9:00",
+    "9:00–9:50",
+    "9:50–10:40",
+    "10:40–11:30",
+    "11:30–12:20",
+    "12:20–1:10",
+    "1:10–2:00",
+    "2:00–2:50",
+    "2:50–3:40",
+    "3:40–4:30"
+  ]
+}

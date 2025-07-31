@@ -118,9 +118,27 @@
             position: fixed;
             height: 95vh;
             width: 100vw;
-            z-index: 200;
+            z-index: 20;
             background-color: transparent;
         }
+
+        .view {
+            z-index: 9999;
+            /* Make sure it's very high */
+            position: fixed;
+            /* Required for z-index to work as expected */
+            bottom: 50px;
+            /* Position it clearly */
+            right: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+
 
 
         @media screen and (max-width: 768px) {
@@ -265,8 +283,9 @@
 
             </tbody>
         </table>
-        <button class="view" onclick="ViewMode()">View Only</button>
+
     </div>
+    <button class="view" onclick="ViewMode()">View Only</button>
 
 </body>
 <script>
@@ -732,7 +751,7 @@
         Overlays.style.display = "";
         Overlays2.style.display = "";
         ViewHidestr = "";
-        Kavach.style.display  = "none";
+        Kavach.style.display = "none";
     } else {
         Kavach.style.display = ""
         Overlays.style.display = "none";
